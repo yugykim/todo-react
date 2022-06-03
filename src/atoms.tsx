@@ -1,13 +1,27 @@
-import {atom, selector } from "recoil";
+import {atom } from "recoil";
 
-interface IToDo {
-  [key: string]: string[]
+export interface ITodo {
+  id: number;
+  text: string;
 }
-export const toDoState = atom<IToDo>({
+
+interface IToDoState {
+  [key: string]: ITodo[];
+}
+
+export const toDoState = atom<IToDoState>({
   key: "toDo",
   default: {
-    to_do: ["a","b","c"],
-    doing: ["e", "f"],
-    done: ["g", "h"]
-  }
-})
+    "To Do" : [],
+    Doing: [],
+    Done: []
+  },
+});
+
+
+export const cardMovement = atom({
+  key: "card",
+  default: false,
+});
+
+
