@@ -1,6 +1,8 @@
 import React from "react";
  import { Draggable } from "react-beautiful-dnd";
+import { useSetRecoilState } from "recoil";
  import styled from "styled-components";
+import { cardMovement } from "../atoms";
 
  const Card = styled.div<{ isDragging:boolean }>`
   border-radius: 5px;
@@ -17,11 +19,21 @@ import React from "react";
  }
 
  function DragabbleCard({ toDoId, toDoText, index }: IDragabbleCardProps) {
+  const setCardMovement = useSetRecoilState(cardMovement);
+  const onMouseDown = (args: boolean) => {
+    const draggingStatus = args
+    setCardMovement(() => {
+      return draggingStatus;
+    })
+    return undefined;
+  };
+
    return (
      <Draggable key={toDoId} draggableId={toDoId+""} index={index}>
        {(magic, snapshot) => (
          <Card
           isDragging={snapshot.isDragging}
+          onMouseDown={onMouseDown(snapshot.isDragging)}
             ref={magic.innerRef}
             {...magic.dragHandleProps}
             {...magic.draggableProps}
@@ -34,3 +46,6 @@ import React from "react";
  }
 
  export default React.memo(DragabbleCard);
+
+
+ 

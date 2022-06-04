@@ -1,10 +1,12 @@
-import { useRecoilState } from 'recoil';
-import { toDoState } from './atoms';
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { cardMovement, toDoState } from './atoms';
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import styled, { createGlobalStyle } from "styled-components";
 import Board from './components/Board';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useForm } from "react-hook-form";
+import { useState } from 'react';
 
 const Globalstyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,200&display=swap');
@@ -56,6 +58,7 @@ const Globalstyle = createGlobalStyle`
   }
   body {
     font-family: 'Source Sans Pro', sans-serif;
+    background-color: #dcdde1;
   }
   a {
     text-decoration: none;
@@ -66,13 +69,13 @@ const Globalstyle = createGlobalStyle`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #3F8CF2;
-  height: 100vh;
   width: 100vw;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
+  position: f
 `;
+
 const Boards = styled.div`
   display: flex;
   justify-content: center;
@@ -81,12 +84,80 @@ const Boards = styled.div`
   gap: 10px;
  `;
 
+const IconBoards = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+ `;
+
+const InnerBoard = styled.div<IAreaProps>`
+  position: fixed;
+  padding: 2rem;
+`;
+
+const IconWrapper = styled.div`
+  text-align: center;
+  color: white;
+  font-size: 1rem;
+  &:hover {
+    font-size: 3rem;
+    transition: font-size .2s ease-in-out;
+  }
+`;
+
+const ButtonForm = styled.form`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10vw;
+  max-width: 20rem;
+  min-height: 300px;
+`;
+
+const Button = styled.button`
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color: #c23616;
+`;
+
+const Input = styled.input`
+  border: none;
+  background-color: transparent;
+`;
+
+interface IAreaProps {
+  isDraggingFromThis: boolean;
+  isDraggingOver: boolean;
+}
+
+interface IForm {
+  newToDo: string;
+}
+
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
+  const [card, setCardMovement] = useRecoilState(cardMovement);
+  const [deleted, setDeleted] = useState(false);
+  const { register, handleSubmit } = useForm<IForm>();
+
   const onDragEnd = (info: DropResult) => {
-    console.log(info);
-    const { destination, draggableId, source } = info;
+    const { destination, source } = info;
     if (!destination?.droppableId) return;
+    if (destination?.droppableId === "delete") {
+      setToDos((allBoards) => {
+        //save the all boards after removing dropped data. 
+        const boardCopy = [...allBoards[source.droppableId]];
+        boardCopy.splice(source.index, 1);
+        setDeleted(true);
+        return {
+          ...allBoards,
+          [source.droppableId]: boardCopy
+        };
+      })
+      setCardMovement(false);
+    }
     if (destination?.droppableId === source.droppableId) {
       //moving in the same board
       setToDos((allBoards) => {
@@ -120,19 +191,56 @@ function App() {
     }
   };
 
+  const onSubmit = ({ newToDo }: IForm) => {
+
+    setToDos((allBoards) => {
+      return {
+        ...allBoards,
+        [newToDo]: []
+      };
+    })
+  }
+
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Wrapper>
-        <div>
-          <Boards>
-            {Object.keys(toDos).map((boardId) => (
-              <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
-            ))}
-          </Boards>
-        </div>
-        {}<FontAwesomeIcon icon={faTrashCan} />
-      </Wrapper>
-    </DragDropContext>
+    <>
+      <Globalstyle />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Wrapper>
+          <ButtonForm onSubmit={handleSubmit(onSubmit)}>
+            <Button type="submit"><FontAwesomeIcon icon={faPlus} /></Button>
+            <Input
+              {...register("newToDo", { required: true })}
+              type="text"
+            />
+          </ButtonForm>
+          <div>
+            <Boards>
+              {Object.keys(toDos).map((boardId) => (
+                <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
+              ))}
+            </Boards>
+            <IconBoards>
+              <Droppable droppableId="delete">
+                {(magic, snapshot) => (
+                  <InnerBoard
+                    isDraggingOver={snapshot.isDraggingOver}
+                    isDraggingFromThis={Boolean(snapshot.draggingFromThisWith)}
+                    ref={magic.innerRef}
+                    {...magic.droppableProps}
+                  >
+                    <IconWrapper>
+                      {card ? <FontAwesomeIcon icon={faTrashCan} /> : ""}
+                      {magic.placeholder}
+                    </IconWrapper>
+                  </InnerBoard>
+                )}
+              </Droppable>
+            </IconBoards>
+          </div>
+        </Wrapper>
+      </DragDropContext>
+    </>
   );
 }
 
