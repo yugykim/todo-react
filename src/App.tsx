@@ -6,7 +6,6 @@ import Board from './components/Board';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from "react-hook-form";
-import { useState } from 'react';
 
 const Globalstyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,200&display=swap');
@@ -137,7 +136,6 @@ interface IForm {
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const [card, setCardMovement] = useRecoilState(cardMovement);
-  const [deleted, setDeleted] = useState(false);
   const { register, handleSubmit } = useForm<IForm>();
 
   const onDragEnd = (info: DropResult) => {
@@ -148,7 +146,6 @@ function App() {
         //save the all boards after removing dropped data. 
         const boardCopy = [...allBoards[source.droppableId]];
         boardCopy.splice(source.index, 1);
-        setDeleted(true);
         return {
           ...allBoards,
           [source.droppableId]: boardCopy
@@ -188,7 +185,7 @@ function App() {
       })
     }
   };
-
+  //add new board by user input the name of board.
   const onSubmit = ({ newToDo }: IForm) => {
 
     setToDos((allBoards) => {

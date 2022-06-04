@@ -1,4 +1,4 @@
-import {atom, selector } from "recoil";
+import { atom } from "recoil";
 
 export interface ITodo {
   id: number;
@@ -20,17 +20,4 @@ export const cardMovement = atom<boolean>({
   key: "cardStatus",
   default: false,
 });
-
-export const todoListStatsState = selector({
-  key: "TodoListStats",
-  get: ({get}) => {
-    const todoList = get(toDoState);
-    const totalNum = todoList.length;
-
-    return {
-      totalNum
-    }
-  },
-});
-
 
