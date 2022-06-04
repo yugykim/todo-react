@@ -1,10 +1,10 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { cardMovement, toDoState } from './atoms';
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import styled, { createGlobalStyle } from "styled-components";
 import Board from './components/Board';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from "react-hook-form";
 import { useState } from 'react';
 
@@ -107,18 +107,6 @@ const IconWrapper = styled.div`
 
 const ButtonForm = styled.form`
   height: 10vh; 
-`;
-
-const Button = styled.button`
-  background-color: transparent;
-  border: none;
-  font-size: 1.5rem;
-  margin-right: 10px;
-  color: #c23616;
-  &:hover {
-    font-size: 1.8rem;
-    transition: font-size .2s ease-in-out;
-  }
 `;
 
 const Input = styled.input`
