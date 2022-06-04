@@ -70,10 +70,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
+  height: 100vh;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-  position: f
 `;
 
 const Boards = styled.div`
@@ -106,12 +106,7 @@ const IconWrapper = styled.div`
 `;
 
 const ButtonForm = styled.form`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 10vw;
-  max-width: 20rem;
-  min-height: 300px;
+  height: 10vh; 
 `;
 
 const Button = styled.button`
@@ -120,11 +115,26 @@ const Button = styled.button`
   font-size: 1.5rem;
   margin-right: 10px;
   color: #c23616;
+  &:hover {
+    font-size: 1.8rem;
+    transition: font-size .2s ease-in-out;
+  }
 `;
 
 const Input = styled.input`
+  font-size: 18px;
   border: none;
-  background-color: transparent;
+  border-bottom: 1px solid #ccc;
+  -webkit-appearance: none;
+  border-radius: 0;
+  padding: 5px 5px;
+  width: 10rem;
+  &:focus {
+		outline: 0;
+		border-color: coral;
+    width: 15rem;
+    transition: width .3s ease-in-out;
+	}
 `;
 
 interface IAreaProps {
@@ -192,7 +202,7 @@ function App() {
   };
 
   const onSubmit = ({ newToDo }: IForm) => {
-
+    
     setToDos((allBoards) => {
       return {
         ...allBoards,
@@ -208,11 +218,12 @@ function App() {
       <DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>
           <ButtonForm onSubmit={handleSubmit(onSubmit)}>
-            <Button type="submit"><FontAwesomeIcon icon={faPlus} /></Button>
             <Input
               {...register("newToDo", { required: true })}
               type="text"
+              placeholder="Add new board"
             />
+            <Button type="submit"><FontAwesomeIcon icon={faPlus} /></Button>
           </ButtonForm>
           <div>
             <Boards>
