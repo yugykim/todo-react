@@ -202,7 +202,7 @@ function App() {
   };
 
   const onSubmit = ({ newToDo }: IForm) => {
-    
+
     setToDos((allBoards) => {
       return {
         ...allBoards,
@@ -223,7 +223,6 @@ function App() {
               type="text"
               placeholder="Add new board"
             />
-            <Button type="submit"><FontAwesomeIcon icon={faPlus} /></Button>
           </ButtonForm>
           <div>
             <Boards>
