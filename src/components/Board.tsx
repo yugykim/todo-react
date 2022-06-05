@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   width: 25vw;
   max-width: 20rem;
   padding-top: 10px 0px;
-  background-color: silver ;
+  background-color: green ;
   border-radius: 5px;
   min-height: 300px;
  `;
