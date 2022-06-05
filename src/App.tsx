@@ -38,7 +38,7 @@ const InnerBoard = styled.div<IAreaProps>`
 
 const IconWrapper = styled.div`
   text-align: center;
-  color: white;
+  color: #192a56;
   font-size: 1rem;
   &:hover {
     font-size: 3rem;
@@ -60,7 +60,7 @@ const Input = styled.input`
   width: 10rem;
   &:focus {
 		outline: 0;
-		border-color: coral;
+		border-color: #7f8fa6;
     width: 15rem;
     transition: width .3s ease-in-out;
 	}
