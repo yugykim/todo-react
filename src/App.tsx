@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
 import { cardMovement, toDoState } from './atoms';
 import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import Board from './components/Board';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +23,7 @@ const Boards = styled.div`
   align-items: flex-start;
   width: 100%;
   gap: 10px;
+  flex-wrap: wrap;
  `;
 
 const IconBoards = styled.div`
@@ -129,7 +130,6 @@ function App() {
   };
   //add new board by user input the name of board.
   const onSubmit = ({ newToDo }: IForm) => {
-
     setToDos((allBoards) => {
       return {
         ...allBoards,
@@ -145,7 +145,7 @@ function App() {
         <Wrapper>
           <ButtonForm onSubmit={handleSubmit(onSubmit)}>
             <Input
-              {...register("newToDo", { required: true })}
+              {...register("newToDo", { required: true, disabled: Object.keys(toDos).length < 6? false: true })}
               type="text"
               placeholder="Add new board"
             />

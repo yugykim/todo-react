@@ -4,6 +4,8 @@ import styled from "styled-components";
 import DragabbleCard from "../components/DragabbleCard";
 import { ITodo, toDoState } from '../atoms';
 import { useSetRecoilState } from "recoil";
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wrapper = styled.div`
   display: flex;
@@ -78,11 +80,17 @@ function Board({ toDos, boardId }: IBoardProps) {
     })
     setValue("toDo", "");
   }
+  const showingDeleteBtn = () => {
+
+  };
 
   return (
     <div>
       <Wrapper>
-        <Title>{boardId}</Title>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Title onMouseOut={showingDeleteBtn}>{boardId}</Title>
+          <div><FontAwesomeIcon icon={faX} /></div>
+        </div>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input
             {...register("toDo", { required: true })}
