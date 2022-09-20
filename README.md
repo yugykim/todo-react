@@ -13,5 +13,8 @@ Live Demo: https://yugykim.github.io/todo-react/](https://yugykim.github.io/todo
 - React 
 - Recoil 
 - React-Beautiful-dnd 
-- style-component CSS
+- style-component css
+
+
+
 ![53607406-c8f3a780-3c12-11e9-979c-7f3b5bd1bfbd](https://user-images.githubusercontent.com/82011274/191153396-4e13b7e0-130b-4b36-a230-0cb3006d7591.gif)
