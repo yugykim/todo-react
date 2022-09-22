@@ -1,6 +1,7 @@
 
 # Kanban Board
-Kanban Board is like a To-Do List divided into separate boards. Users can create a new board by naming anything they want. Also, it can drag and drop between each board and in a board. And, completed task can be deleted by droping a task board to the trash icon. 
+Kanban Board is like a To-Do List divided into separate boards. Users can create a new board by naming anything they want. Also, it can drag and drop between each board and in a board. And, completed task can be deleted by droping a task board to the trash icon.
+<br />
 Live Demo: [https://yugykim.github.io/todo-react/]
 
 ### Core Features
